@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### jisung ###
+src/main/resources
+src/main/java/com/Qlog/backend/P6spyConfig.java
+src/main/java/com/Qlog/backend/P6spyPrettySqlFormatter.java
