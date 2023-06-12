@@ -17,6 +17,15 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
+    public User(String loginId, String password, String name) {
+        this.loginId = loginId;
+        this.password = password;
+        this.profileImage = "defaultProfileImage.png";
+        this.name = name;
+        this.point = 0;
+        this.tier = "None";
+    }
+
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;

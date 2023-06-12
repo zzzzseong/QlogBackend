@@ -21,7 +21,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testUser() {
-        User user = new User();
+        User user = new User("test", "test", "test");
         User savedUser = userRepository.save(user);
 
         Optional<User> findOptionalUser = userRepository.findById(savedUser.getId());
