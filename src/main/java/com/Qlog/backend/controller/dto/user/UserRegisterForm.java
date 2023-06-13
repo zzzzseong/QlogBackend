@@ -1,4 +1,4 @@
-package com.Qlog.backend.controller.form.user;
+package com.Qlog.backend.controller.dto.user;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,8 @@
 package com.Qlog.backend.controller;
 
-import com.Qlog.backend.controller.form.user.UserLoginForm;
-import com.Qlog.backend.controller.form.user.UserRegisterForm;
+import com.Qlog.backend.controller.dto.user.UserLoginForm;
+import com.Qlog.backend.controller.dto.user.UserDuplicateCheckForm;
+import com.Qlog.backend.controller.dto.user.UserRegisterForm;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,5 +45,13 @@ public class UserController {
 
         log.info("LOGIN SUCCESS [{}]", form.getLoginId());
         return true;
+    }
+
+    @PostMapping("/duplication")
+    public boolean checkDuplication(UserDuplicateCheckForm form) {
+        User findUser = userService.findByLoginId(form.getLoginId());
+
+        //ID 중복: false, ID 사용 가능: true
+        return (findUser == null);
     }
 }

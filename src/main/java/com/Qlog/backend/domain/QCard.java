@@ -12,6 +12,11 @@ import java.util.List;
 @Getter
 public class QCard {
 
+    public QCard(User user, String question) {
+        this.qCard_user = user;
+        this.question = question;
+    }
+
     @Id @GeneratedValue
     @Column(name = "qCard_id")
     private Long id;
@@ -25,5 +30,8 @@ public class QCard {
 
     private boolean solved = false;
     private String question;
-    private int point;
+
+    public void updateQuestion(String question) {
+        this.question = question;
+    }
 }
