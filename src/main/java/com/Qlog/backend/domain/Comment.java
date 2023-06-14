@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Comment {
 
+    public Comment(User user, QCard qCard, String comment) {
+        this.comment_user = user;
+        this.comment_qCard = qCard;
+        this.comment = comment;
+    }
+
     @Id @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
@@ -23,4 +29,8 @@ public class Comment {
 
     private boolean adopted = false;
     private String comment;
+
+    public void update(String comment) {
+        this.comment = comment;
+    }
 }

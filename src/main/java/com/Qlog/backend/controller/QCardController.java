@@ -23,6 +23,8 @@ public class QCardController {
 
         QCard qCard = new QCard(user, request.getQuestion());
         user.getQCards().add(qCard);
+        user.updatePoint(10);
+
         qCardService.save(qCard);
     }
 
@@ -53,6 +55,8 @@ public class QCardController {
 
         QCard findQCard = qCardService.findById(qCardId);
         user.getQCards().remove(findQCard);
+        user.updatePoint(-10);
+
         qCardService.delete(findQCard);
     }
 }

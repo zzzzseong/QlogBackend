@@ -29,6 +29,7 @@ public class UserController {
         User user = new User(form.getLoginId(), form.getPassword(), form.getName());
 
         userService.save(user);
+        log.info("REGISTER SUCCESS [{}]", form.getLoginId());
     }
 
     @PostMapping("/login")

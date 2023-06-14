@@ -43,4 +43,8 @@ public class User {
     private String name;
     private int point;
     private String tier;
+
+    public void updatePoint(int point) {
+        this.point += point;
+    }
 }
