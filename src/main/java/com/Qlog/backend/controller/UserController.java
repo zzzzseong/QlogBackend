@@ -1,6 +1,5 @@
 package com.Qlog.backend.controller;
 
-import com.Qlog.backend.config.WebSecurityConfig;
 import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.user.UserLoginForm;
 import com.Qlog.backend.controller.dto.user.UserDuplicateCheckForm;
@@ -21,16 +20,22 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    private final WebSecurityConfig webSecurityConfig;
 
     @PostMapping("/register")
-    public void register(UserRegisterForm form) {
-        String encodedPW = webSecurityConfig.getPasswordEncoder().encode(form.getPassword());
+    public Long register(UserRegisterForm form) {
+        try {
+            User user = new User(form.getLoginId(), form.getPassword(), form.getName());
 
-        User user = new User(form.getLoginId(), encodedPW, form.getName());
+            //User 비밀번호 암호화 -> Spring Security 사용법 알아보기
 
-        userService.save(user);
-        log.info("REGISTER SUCCESS [{}]", form.getLoginId());
+            userService.save(user);
+            log.info("REGISTER SUCCESS [{}]", form.getLoginId());
+
+            return user.getId();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @PostMapping("/login")
@@ -38,10 +43,8 @@ public class UserController {
         User findUser = userService.findByLoginId(form.getLoginId());
 
         //ID, PW 예외처리
-        if(findUser == null) return false;
-
-        if(!webSecurityConfig.getPasswordEncoder().matches(form.getPassword(), findUser.getPassword())) return false;
-        if(!findUser.getPassword().equals(form.getPassword())) return false;
+        if(findUser == null) return false; //ID is null
+        if(!findUser.getPassword().equals(form.getPassword())) return false; //PW is not correct
 
         //Session 설정
         HttpSession session = request.getSession();
