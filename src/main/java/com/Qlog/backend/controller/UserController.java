@@ -22,7 +22,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public Long register(UserRegisterForm form) {
+    public void register(UserRegisterForm form) {
         try {
             User user = new User(form.getLoginId(), form.getPassword(), form.getName());
 
@@ -30,11 +30,8 @@ public class UserController {
 
             userService.save(user);
             log.info("REGISTER SUCCESS [{}]", form.getLoginId());
-
-            return user.getId();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 
@@ -54,6 +51,17 @@ public class UserController {
         return true;
     }
 
+    @PutMapping("/logout")
+    public void logout(HttpServletRequest request,
+                       @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+        HttpSession session = request.getSession(false);
+
+        if(session != null) {
+            session.invalidate();
+            log.info("LOGOUT SUCCESS [{}]", user.getLoginId());
+        }
+    }
+
     @PostMapping("/duplication")
     public boolean checkDuplication(UserDuplicateCheckForm form) {
         User findUser = userService.findByLoginId(form.getLoginId());
@@ -66,6 +74,7 @@ public class UserController {
     public UserReadResponse readUserInformation(@SessionAttribute(name= SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
 
-        return new UserReadResponse(user.getName(), user.getPoint());
+        User findUser = userService.findById(user.getId());
+        return new UserReadResponse(findUser.getName(), findUser.getPoint(), findUser.getTier(), findUser.getQCards());
     }
 }

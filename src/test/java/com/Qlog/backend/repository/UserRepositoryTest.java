@@ -1,23 +1,23 @@
 package com.Qlog.backend.repository;
 
+import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
 @Transactional
-@Rollback(false)
 public class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
-
 
     @Test
     public void testUser() {
@@ -30,5 +30,18 @@ public class UserRepositoryTest {
             Assertions.assertThat(findUser.getId()).isEqualTo(user.getId());
             Assertions.assertThat(findUser).isEqualTo(user);
         }
+    }
+
+    @Test
+    public void testLAZY() {
+        User user = new User("test", "test", "test");
+        User saveUser = userRepository.save(user);
+
+        User findUser = userRepository.findById(saveUser.getId()).get();
+        List<QCard> qCards = findUser.getQCards();
+        for (QCard qCard : qCards) {
+            System.out.println("test");
+        }
+
     }
 }

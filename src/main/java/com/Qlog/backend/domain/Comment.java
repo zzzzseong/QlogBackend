@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class Comment {
-
     public Comment(User user, QCard qCard, String comment) {
         this.comment_user = user;
         this.comment_qCard = qCard;
