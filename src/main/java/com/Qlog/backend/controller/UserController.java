@@ -1,18 +1,25 @@
 package com.Qlog.backend.controller;
 
 import com.Qlog.backend.consts.SessionConst;
-import com.Qlog.backend.controller.dto.user.UserLoginForm;
-import com.Qlog.backend.controller.dto.user.UserDuplicateCheckForm;
-import com.Qlog.backend.controller.dto.user.UserReadResponse;
-import com.Qlog.backend.controller.dto.user.UserRegisterForm;
+import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
+import com.Qlog.backend.service.cloud.FileStorageService;
+import com.amazonaws.auth.policy.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.awt.*;
+import java.net.MalformedURLException;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
+    private final FileStorageService fileStorageService;
 
     @PostMapping("/register")
     public void register(UserRegisterForm form) {
@@ -76,12 +84,21 @@ public class UserController {
         if(user == null) return null;
 
         User findUser = userService.findById(user.getId());
-        return new UserReadResponse(findUser.getName(), findUser.getPoint(), findUser.getTier(), findUser.getQCards());
+        String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/" + findUser.getProfileImageName();
+
+        return new UserReadResponse(findUser.getName(), findUser.getPoint(), findUser.getTier(), imgPath, findUser.getQCards());
     }
 
-//    @GetMapping("/image")
-//    public MultipartFile readUserProfileImage(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
-//        if(user == null) return null;
-//
+    @PostMapping("/image/upload")
+    public void uploadProfileImage(UserProfileImageUploadForm request,
+                                   @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+        if(user == null) return;
+
+        fileStorageService.uploadProfileImage(request.getImage());
+    }
+
+//    @DeleteMapping("/image/remove")
+//    public void removeProfileImage(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+//        if(user == null) return;
 //    }
 }

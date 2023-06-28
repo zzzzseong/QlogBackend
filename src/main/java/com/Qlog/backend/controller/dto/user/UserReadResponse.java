@@ -15,13 +15,15 @@ public class UserReadResponse {
     private String name;
     private int point;
     private String tier;
+    private String imgPath;
 
     private List<QCardRead> qCards = new ArrayList<>();
 
-    public UserReadResponse(String name, int point, String tier, List<QCard> qCards) {
+    public UserReadResponse(String name, int point, String tier, String imgPath, List<QCard> qCards) {
         this.name = name;
         this.point = point;
         this.tier = tier;
+        this.imgPath = imgPath;
         for (QCard qCard : qCards) {
             this.qCards.add(new QCardRead(qCard.getId(), qCard.getQuestion(), qCard.isSolved()));
         }

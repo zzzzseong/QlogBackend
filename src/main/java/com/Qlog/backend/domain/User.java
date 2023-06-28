@@ -20,7 +20,7 @@ public class User {
     public User(String loginId, String password, String name) {
         this.loginId = loginId;
         this.password = password;
-        this.profileImage = "defaultProfileImage.png";
+        this.profileImageName = "default_profile_image.png";
         this.name = name;
         this.point = 0;
         this.tier = "None";
@@ -39,7 +39,7 @@ public class User {
     private String loginId;
     private String password;
 
-    private String profileImage;
+    private String profileImageName;
     private String name;
     private int point;
     private String tier;
