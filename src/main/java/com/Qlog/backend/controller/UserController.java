@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,4 +78,10 @@ public class UserController {
         User findUser = userService.findById(user.getId());
         return new UserReadResponse(findUser.getName(), findUser.getPoint(), findUser.getTier(), findUser.getQCards());
     }
+
+//    @GetMapping("/image")
+//    public MultipartFile readUserProfileImage(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+//        if(user == null) return null;
+//
+//    }
 }
