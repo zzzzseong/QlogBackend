@@ -48,16 +48,8 @@ public class FileStorageService {
         }
     }
 
-    public byte[] downloadProfileImage(String fileName) {
-        try {
-            System.out.println(bucket + "/user_profile");
-            System.out.println("user_profile/" + fileName);
-            S3ObjectInputStream objectContent = amazonS3Client.getObject(bucket + "/user_profile", fileName).getObjectContent();
-            return IOUtils.toByteArray(objectContent);
-        } catch(Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void removeProfileImage(String fileName) {
+        amazonS3Client.deleteObject(bucket + "/user_profile", fileName);
     }
 
 

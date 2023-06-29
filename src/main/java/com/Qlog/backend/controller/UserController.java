@@ -1,5 +1,6 @@
 package com.Qlog.backend.controller;
 
+import com.Qlog.backend.consts.ServiceConst;
 import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.User;
@@ -93,12 +94,20 @@ public class UserController {
     public void uploadProfileImage(UserProfileImageUploadForm request,
                                    @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return;
+        if(!user.getProfileImageName().equals(ServiceConst.defaultProfileImage)) {
+            fileStorageService.removeProfileImage(user.getProfileImageName());
+        }
 
-        fileStorageService.uploadProfileImage(request.getImage());
+        user.updateProfileImage(fileStorageService.uploadProfileImage(request.getImage()));
     }
 
-//    @DeleteMapping("/image/remove")
-//    public void removeProfileImage(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
-//        if(user == null) return;
-//    }
+    @DeleteMapping("/image/remove")
+    public String removeProfileImage(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+        if(user == null) return null;
+        if(user.getProfileImageName().equals(ServiceConst.defaultProfileImage)) return "기본 이미지는 제거할 수 없습니다.";
+
+        fileStorageService.removeProfileImage(user.getProfileImageName());
+        user.updateProfileImage(ServiceConst.defaultProfileImage);
+        return "ok";
+    }
 }
