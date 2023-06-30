@@ -21,6 +21,7 @@ public class User {
         this.loginId = loginId;
         this.password = password;
         this.profileImageName = "default_profile_image.png";
+        this.introduction = "안녕하세요. " + name + "입니다.";
         this.name = name;
         this.point = 0;
         this.tier = "None";
@@ -41,6 +42,7 @@ public class User {
 
     private String profileImageName;
     private String name;
+    private String introduction;
     private int point;
     private String tier;
 
@@ -49,5 +51,8 @@ public class User {
     }
     public void updateProfileImage(String profileImageName) {
         this.profileImageName = profileImageName;
+    }
+    public void updateIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 }
