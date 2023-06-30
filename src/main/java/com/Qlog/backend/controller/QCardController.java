@@ -6,6 +6,7 @@ import com.Qlog.backend.controller.dto.qCard.QCardResponse;
 import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.QCardService;
+import com.Qlog.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,15 +16,19 @@ import org.springframework.web.bind.annotation.*;
 public class QCardController {
 
     private final QCardService qCardService;
+    private final UserService userService;
 
     @PostMapping("/create")
     public void createQCard(@RequestBody QCardCreateRequest request,
                             @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return;
+        User findUser = userService.findById(user.getId());
 
-        QCard qCard = new QCard(user, request.getQuestion());
-        user.getQCards().add(qCard);
-        user.updatePoint(10);
+        System.out.println(request.getQuestion());
+
+        QCard qCard = new QCard(findUser, request.getQuestion());
+        findUser.getQCards().add(qCard);
+        findUser.updatePoint(10);
 
         qCardService.save(qCard);
     }

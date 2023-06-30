@@ -87,7 +87,7 @@ public class UserController {
         User findUser = userService.findById(user.getId());
         String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/" + findUser.getProfileImageName();
 
-        return new UserReadResponse(findUser.getName(), findUser.getPoint(), findUser.getTier(), imgPath, findUser.getQCards());
+        return new UserReadResponse(findUser.getName(), findUser.getIntroduction(), findUser.getPoint(), findUser.getTier(), imgPath, findUser.getQCards());
     }
 
     @PostMapping("/image/upload")
