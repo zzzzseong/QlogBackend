@@ -1,5 +1,6 @@
 package com.Qlog.backend.service;
 
+import com.Qlog.backend.domain.Comment;
 import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.repository.QCardRepository;
 import lombok.RequiredArgsConstructor;

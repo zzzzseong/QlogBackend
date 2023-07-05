@@ -97,8 +97,7 @@ public class UserController {
         if(!user.getProfileImageName().equals(ServiceConst.defaultProfileImage)) {
             fileStorageService.removeProfileImage(user.getProfileImageName());
         }
-
-        user.updateProfileImage(fileStorageService.uploadProfileImage(request.getImage()));
+        fileStorageService.uploadProfileImage(user.getId(), request.getImage());
     }
 
     @DeleteMapping("/image/remove")

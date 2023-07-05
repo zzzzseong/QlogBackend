@@ -8,6 +8,7 @@ import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.CommentService;
 import com.Qlog.backend.service.QCardService;
+import com.Qlog.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,18 +18,21 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final UserService userService;
     private final QCardService qCardService;
 
-    @PostMapping("/create")
+    @PostMapping("/create/{qCardId}")
     public void createComment(@RequestBody CommentCreateRequest request,
+                              @PathVariable Long qCardId,
                               @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return;
 
-        QCard findQCard = qCardService.findById(request.getQCardId());
-        Comment comment = new Comment(user, findQCard, request.getComment());
+        QCard findQCard = qCardService.findById(qCardId);
+        User findUser = userService.findById(user.getId());
+        Comment comment = new Comment(findUser, findQCard, request.getComment());
 
         findQCard.getComments().add(comment);
-        user.getComments().add(comment);
+        findUser.getComments().add(comment);
 
         commentService.save(comment);
     }
