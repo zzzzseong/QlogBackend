@@ -1,5 +1,6 @@
 package com.Qlog.backend.controller.dto.user;
 
+import com.Qlog.backend.domain.Comment;
 import com.Qlog.backend.domain.QCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,8 +19,10 @@ public class UserReadResponse {
     private String imgPath;
 
     private List<QCardRead> qCards = new ArrayList<>();
+    private List<CommentRead> comments = new ArrayList<>();
 
-    public UserReadResponse(String name, String introduction, int point, String tier, String imgPath, List<QCard> qCards) {
+    public UserReadResponse(String name, String introduction, int point,
+                            String tier, String imgPath, List<QCard> qCards, List<Comment> comments) {
         this.name = name;
         this.introduction = introduction;
         this.point = point;
@@ -28,6 +31,10 @@ public class UserReadResponse {
         for (QCard qCard : qCards) {
             this.qCards.add(new QCardRead(qCard.getId(), name, qCard.getQuestion(), qCard.isSolved()));
         }
+        for (Comment comment : comments) {
+            this.comments.add(new CommentRead(comment.getId()));
+        }
+
     }
 }
 
@@ -38,4 +45,10 @@ class QCardRead {
     private String name;
     private String question;
     private boolean solved;
+}
+
+@Data
+@AllArgsConstructor
+class CommentRead {
+    private Long id;
 }

@@ -12,6 +12,7 @@ public class Comment {
         this.comment_user = user;
         this.comment_qCard = qCard;
         this.comment = comment;
+        this.adopted = false;
     }
 
     @Id @GeneratedValue
@@ -26,7 +27,7 @@ public class Comment {
     @JoinColumn(name = "qCard_id")
     private QCard comment_qCard;
 
-    private boolean adopted = false;
+    private boolean adopted;
     private String comment;
 
     public void update(String comment) {

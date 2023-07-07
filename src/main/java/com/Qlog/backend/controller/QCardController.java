@@ -63,7 +63,8 @@ public class QCardController {
             String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/"
                     + comment.getComment_user().getProfileImageName();
 
-            res.add(new QCardCommentsResponse(comment.getId(), imgPath, comment.getComment_user().getName(), comment.getComment()));
+            res.add(new QCardCommentsResponse(comment.getId(), imgPath, comment.getComment_user().getName()
+                    , comment.getComment(), comment.isAdopted(), findQCard.isSolved()));
         }
 
         return res;
@@ -80,12 +81,15 @@ public class QCardController {
     }
 
     @PutMapping("/update/adopt/{commentId}")
-    public void updateQCardAdopt(@SessionAttribute(name = SessionConst.LOGIN_USER) User user,
+    public String updateQCardAdopt(@SessionAttribute(name = SessionConst.LOGIN_USER) User user,
                                  @PathVariable Long commentId) {
-        if(user == null) return;
+        if(user == null) return "Session Error";
+
+        Comment findComment = commentService.findById(commentId);
+        User commentUser = findComment.getComment_user();
+        if(user.getId() == commentUser.getId()) return "자신의 글은 채택할 수 없습니다.";
 
         //채택된 댓글 채택 세팅
-        Comment findComment = commentService.findById(commentId);
         commentService.updateAdopted(findComment, true);
 
         //채택된 글 채택 세팅
@@ -93,12 +97,13 @@ public class QCardController {
         qCardService.updatedSolved(findQCard, true);
 
         //채택된 댓글 유저 포인트 추가
-        User commentUser = findComment.getComment_user();
         userService.updatePoint(commentUser, 10);
 
         //채택된 글 유저 포인트 추가
         User findUser = userService.findById(user.getId());
         userService.updatePoint(findUser, 10);
+
+        return "ok";
     }
 
 
