@@ -25,6 +25,11 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    @Transactional
+    public void updatePoint(User user, int point) {
+        user.updatePoint(point);
+    }
+
     public User findById(Long id) {
         Optional<User> findUser = userRepository.findById(id);
         return findUser.orElse(null);

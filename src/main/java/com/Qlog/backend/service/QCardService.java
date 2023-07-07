@@ -26,6 +26,11 @@ public class QCardService {
         qCardRepository.delete(qCard);
     }
 
+    @Transactional
+    public void updatedSolved(QCard qCard, boolean solved) {
+        qCard.setSolved(solved);
+    }
+
     public QCard findById(Long id) {
         return qCardRepository.findById(id).orElse(null);
     }

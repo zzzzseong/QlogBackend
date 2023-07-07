@@ -34,4 +34,7 @@ public class QCard {
     public void updateQuestion(String question) {
         this.question = question;
     }
+    public void setSolved(Boolean solved) {
+        this.solved = solved;
+    }
 }

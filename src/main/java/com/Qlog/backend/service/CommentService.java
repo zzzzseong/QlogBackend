@@ -20,6 +20,11 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
+    @Transactional
+    public void updateAdopted(Comment comment, boolean adopted) {
+        comment.setAdopted(adopted);
+    }
+
     public Comment findById(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);
     }
