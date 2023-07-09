@@ -6,21 +6,11 @@ import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
 import com.Qlog.backend.service.cloud.FileStorageService;
-import com.amazonaws.auth.policy.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.awt.*;
-import java.net.MalformedURLException;
 
 @RestController
 @RequiredArgsConstructor

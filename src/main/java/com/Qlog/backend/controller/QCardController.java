@@ -26,7 +26,7 @@ public class QCardController {
     private final CommentService commentService;
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("/create") //QCard 생성
     public void createQCard(@RequestBody QCardCreateRequest request,
                             @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return;
@@ -41,7 +41,7 @@ public class QCardController {
         qCardService.save(qCard);
     }
 
-    @GetMapping("/read/{qCardId}")
+    @GetMapping("/read/{qCardId}") //QCard 단일조회
     public QCardResponse readQCard(@PathVariable Long qCardId,
                                    @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
@@ -50,7 +50,7 @@ public class QCardController {
         return new QCardResponse(findQCard.getQuestion(), findQCard.getComments());
     }
 
-    @GetMapping("/readComments/{qCardId}")
+    @GetMapping("/readComments/{qCardId}") //QCard 관련 댓글 조회
     public List<QCardCommentsResponse> readComments(@PathVariable Long qCardId,
                                                     @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
@@ -70,7 +70,15 @@ public class QCardController {
         return res;
     }
 
-    @PutMapping("/update/{qCardId}")
+    @GetMapping("/read/random") //QCard 단건랜덤조회
+    public void readRandomQCard(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+        if(user == null) return;
+
+        //category 에 맞는 qCard random 으로 가져오기
+    }
+
+
+    @PutMapping("/update/{qCardId}") //QCard 수정
     public void updateQCard(@RequestBody QCardCreateRequest request,
                             @PathVariable Long qCardId,
                             @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
@@ -80,7 +88,7 @@ public class QCardController {
         findQCard.updateQuestion(request.getQuestion());
     }
 
-    @PutMapping("/update/adopt/{commentId}")
+    @PutMapping("/update/adopt/{commentId}") //QCard 댓글 채택
     public String updateQCardAdopt(@SessionAttribute(name = SessionConst.LOGIN_USER) User user,
                                  @PathVariable Long commentId) {
         if(user == null) return "Session Error";
@@ -107,7 +115,7 @@ public class QCardController {
     }
 
 
-    @DeleteMapping("/delete/{qCardId}")
+    @DeleteMapping("/delete/{qCardId}") //QCard 삭제
     public void deleteQCard(@PathVariable Long qCardId,
                             @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return;
