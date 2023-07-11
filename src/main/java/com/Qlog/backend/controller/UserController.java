@@ -70,6 +70,15 @@ public class UserController {
         return (findUser == null);
     }
 
+    @PutMapping("/update")
+    public void updateUserProfile(@SessionAttribute(name = SessionConst.LOGIN_USER) User user,
+                                  UserProfileUpdateForm request) {
+        if(user == null) return;
+
+        User findUser = userService.findById(user.getId());
+        userService.UpdateProfile(findUser, request.getUsername(), request.getIntroduction());
+    }
+
     @GetMapping("/read")
     public UserReadResponse readUserInformation(@SessionAttribute(name= SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
@@ -96,8 +105,10 @@ public class UserController {
         if(user == null) return null;
         if(user.getProfileImageName().equals(ServiceConst.defaultProfileImage)) return "기본 이미지는 제거할 수 없습니다.";
 
-        fileStorageService.removeProfileImage(user.getProfileImageName());
-        user.updateProfileImage(ServiceConst.defaultProfileImage);
+        User findUser = userService.findById(user.getId());
+        fileStorageService.removeProfileImage(findUser.getProfileImageName());
+
+        userService.updateProfileImagePath(findUser, ServiceConst.defaultProfileImage);
         return "ok";
     }
 }

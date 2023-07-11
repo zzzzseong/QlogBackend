@@ -52,7 +52,8 @@ public class User {
     public void updateProfileImage(String profileImageName) {
         this.profileImageName = profileImageName;
     }
-    public void updateIntroduction(String introduction) {
+    public void updateProfile(String name, String introduction) {
+        this.name = name;
         this.introduction = introduction;
     }
 }

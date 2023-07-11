@@ -30,6 +30,15 @@ public class UserService {
         user.updatePoint(point);
     }
 
+    @Transactional
+    public void updateProfileImagePath(User user, String path) {
+        user.updateProfileImage(path);
+    }
+    @Transactional
+    public void UpdateProfile(User user, String username, String introduction) {
+        user.updateProfile(username, introduction);
+    }
+
     public User findById(Long id) {
         Optional<User> findUser = userRepository.findById(id);
         return findUser.orElse(null);
