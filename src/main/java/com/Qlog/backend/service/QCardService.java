@@ -35,6 +35,10 @@ public class QCardService {
         return qCardRepository.findById(id).orElse(null);
     }
 
+    public QCard findRandom(String name) {
+        return qCardRepository.findRandomQCard(name);
+    }
+
     public List<QCard> findAll() {
         return qCardRepository.findAll();
     }

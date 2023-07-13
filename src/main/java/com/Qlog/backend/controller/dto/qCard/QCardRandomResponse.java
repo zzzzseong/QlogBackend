@@ -8,12 +8,14 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class QCardResponse {
+public class QCardRandomResponse {
+    private String image;
     private String username;
     private String question;
     private List<Comment> comments;
 
-    public QCardResponse(String username, String question, List<Comment> comments) {
+    public QCardRandomResponse(String image, String username, String question, List<Comment> comments) {
+        this.image = image;
         this.username = username;
         this.question = question;
         this.comments = comments;

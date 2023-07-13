@@ -4,6 +4,7 @@ import com.Qlog.backend.consts.ServiceConst;
 import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.qCard.QCardCommentsResponse;
 import com.Qlog.backend.controller.dto.qCard.QCardCreateRequest;
+import com.Qlog.backend.controller.dto.qCard.QCardRandomResponse;
 import com.Qlog.backend.controller.dto.qCard.QCardResponse;
 import com.Qlog.backend.domain.Comment;
 import com.Qlog.backend.domain.QCard;
@@ -47,13 +48,28 @@ public class QCardController {
         if(user == null) return null;
 
         QCard findQCard = qCardService.findById(qCardId);
-        return new QCardResponse(findQCard.getQuestion(), findQCard.getComments());
+        return new QCardResponse(user.getName(), findQCard.getQuestion(), findQCard.getComments());
+    }
+
+    @GetMapping("/read/random") //QCard 단건랜덤조회
+    public QCardRandomResponse readRandomQCard(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
+        if(user == null) return null;
+
+        QCard findQCard = qCardService.findRandom(user.getName());
+        if(findQCard == null) {
+            return null;
+        }
+        User qCardUser = findQCard.getQCard_user();
+        String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/"
+                + qCardUser.getProfileImageName();
+
+        return new QCardRandomResponse(imgPath, qCardUser.getName(), findQCard.getQuestion(), findQCard.getComments());
     }
 
     @GetMapping("/readComments/{qCardId}") //QCard 관련 댓글 조회
     public List<QCardCommentsResponse> readComments(@PathVariable Long qCardId,
                                                     @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
-        if(user == null) return null;
+        if (user == null) return null;
 
         QCard findQCard = qCardService.findById(qCardId);
         List<Comment> comments = findQCard.getComments();
@@ -69,14 +85,6 @@ public class QCardController {
 
         return res;
     }
-
-    @GetMapping("/read/random") //QCard 단건랜덤조회
-    public void readRandomQCard(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
-        if(user == null) return;
-
-        //category 에 맞는 qCard random 으로 가져오기
-    }
-
 
     @PutMapping("/update/{qCardId}") //QCard 수정
     public void updateQCard(@RequestBody QCardCreateRequest request,
