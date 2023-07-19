@@ -1,8 +1,10 @@
 package com.Qlog.backend.controller;
 
+import com.Qlog.backend.consts.ServiceConst;
 import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.comment.CommentCreateRequest;
 import com.Qlog.backend.controller.dto.comment.CommentUpdateRequest;
+import com.Qlog.backend.controller.dto.qCard.QCardCommentsResponse;
 import com.Qlog.backend.domain.Comment;
 import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
@@ -11,6 +13,9 @@ import com.Qlog.backend.service.QCardService;
 import com.Qlog.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +52,18 @@ public class CommentController {
         if(findComment == null) return;
 
         findComment.update(request.getComment());
+    }
+
+    @GetMapping("/read/{qCardId}")
+    public List<QCardCommentsResponse> readComments(@SessionAttribute(name = SessionConst.LOGIN_USER) User user,
+                             @PathVariable Long qCardId) {
+        if(user == null) return null;
+
+        QCard findQCard = qCardService.findById(qCardId);
+//        return findQCard.getComments().stream()
+//                .map(QCardCommentsResponse::new)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @DeleteMapping("/delete/{commentId}")

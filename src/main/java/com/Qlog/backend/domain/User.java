@@ -1,5 +1,6 @@
 package com.Qlog.backend.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -34,7 +35,9 @@ public class User {
     @OneToMany(mappedBy = "qCard_user", cascade = CascadeType.ALL)
     private List<QCard> qCards = new ArrayList<>();
 
+    //QCard random 탐색 시 comment <-> user 간 순환참조 발생으로 인해 json ignore 추가
     @OneToMany(mappedBy = "comment_user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     private String loginId;

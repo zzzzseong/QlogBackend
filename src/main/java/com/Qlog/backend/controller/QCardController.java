@@ -51,7 +51,7 @@ public class QCardController {
         return new QCardResponse(user.getName(), findQCard.getQuestion(), findQCard.getComments());
     }
 
-    @GetMapping("/read/random") //QCard 단건랜덤조회
+    @GetMapping("/read/random") //QCard 단건랜덤조회 - query 2개 - (qCard + user) -> join 으로 query 한번에 불러올 수 있지 않을까?
     public QCardRandomResponse readRandomQCard(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
 
@@ -63,7 +63,7 @@ public class QCardController {
         String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/"
                 + qCardUser.getProfileImageName();
 
-        return new QCardRandomResponse(imgPath, qCardUser.getName(), findQCard.getQuestion(), findQCard.getComments());
+        return new QCardRandomResponse(findQCard.getId(), imgPath, qCardUser.getName(), findQCard.getQuestion());
     }
 
     @GetMapping("/readComments/{qCardId}") //QCard 관련 댓글 조회

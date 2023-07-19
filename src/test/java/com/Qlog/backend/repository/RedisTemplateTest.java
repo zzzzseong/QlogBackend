@@ -24,6 +24,7 @@ public class RedisTemplateTest {
 
         //then
         String value = valueOperations.get(key);
+        System.out.println(value);
         Assertions.assertThat(value).isEqualTo("hello");
     }
 }

@@ -9,15 +9,15 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class QCardRandomResponse {
+    private Long id;
     private String image;
     private String username;
     private String question;
-    private List<Comment> comments;
 
-    public QCardRandomResponse(String image, String username, String question, List<Comment> comments) {
+    public QCardRandomResponse(Long id, String image, String username, String question) {
+        this.id = id;
         this.image = image;
         this.username = username;
         this.question = question;
-        this.comments = comments;
     }
 }
