@@ -60,8 +60,7 @@ public class QCardController {
             return null;
         }
         User qCardUser = findQCard.getQCard_user();
-        String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/"
-                + qCardUser.getProfileImageName();
+        String imgPath = ServiceConst.S3BucketURL + qCardUser.getProfileImageName();
 
         return new QCardRandomResponse(findQCard.getId(), imgPath, qCardUser.getName(), findQCard.getQuestion());
     }
@@ -76,8 +75,7 @@ public class QCardController {
 
         List<QCardCommentsResponse> res = new ArrayList<>();
         for (Comment comment : comments) {
-            String imgPath = "https://qlogbucket.s3.ap-northeast-2.amazonaws.com/user_profile/"
-                    + comment.getComment_user().getProfileImageName();
+            String imgPath = ServiceConst.S3BucketURL + comment.getComment_user().getProfileImageName();
 
             res.add(new QCardCommentsResponse(comment.getId(), imgPath, comment.getComment_user().getName()
                     , comment.getComment(), comment.isAdopted(), findQCard.isSolved()));
