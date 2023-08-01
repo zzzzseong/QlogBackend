@@ -54,7 +54,6 @@ public class QCardController {
     @GetMapping("/read/random") //QCard 단건랜덤조회 - query 2개 - (qCard + user) -> join 으로 query 한번에 불러올 수 있지 않을까?
     public QCardRandomResponse readRandomQCard(@SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         if(user == null) return null;
-
         QCard findQCard = qCardService.findRandom(user.getName());
         if(findQCard == null) {
             return null;

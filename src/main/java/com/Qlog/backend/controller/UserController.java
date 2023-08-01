@@ -90,6 +90,11 @@ public class UserController {
                 findUser.getTier(), imgPath, findUser.getQCards(), findUser.getComments());
     }
 
+    @GetMapping("/readId")
+    public Long readUserId(@SessionAttribute(name=SessionConst.LOGIN_USER) User user) {
+        return user.getId();
+    }
+
     @PostMapping("/image/upload")
     public void uploadProfileImage(UserProfileImageUploadForm request,
                                    @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
