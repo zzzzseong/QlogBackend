@@ -22,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User implements UserDetails {
 
-    public User(String loginId, String password, String name) {
+    public User(String loginId, String password, String name, Role role) {
         this.loginId = loginId;
         this.password = password;
         this.profileImageName = "default_profile_image.png";
@@ -30,6 +30,7 @@ public class User implements UserDetails {
         this.name = name;
         this.point = 0;
         this.tier = "None";
+        this.role = role;
     }
 
     @Id @GeneratedValue

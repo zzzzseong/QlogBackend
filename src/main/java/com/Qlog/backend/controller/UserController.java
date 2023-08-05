@@ -3,6 +3,7 @@ package com.Qlog.backend.controller;
 import com.Qlog.backend.consts.ServiceConst;
 import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.user.*;
+import com.Qlog.backend.domain.Role;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
 import com.Qlog.backend.service.cloud.FileStorageService;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +26,7 @@ public class UserController {
     @PostMapping("/register")
     public void register(UserRegisterForm form) {
         try {
-            User user = new User(form.getLoginId(), form.getPassword(), form.getName());
+            User user = new User(form.getLoginId(), form.getPassword(), form.getName(), Role.USER);
 
             //User 비밀번호 암호화 -> Spring Security 사용법 알아보기
 
@@ -116,4 +118,15 @@ public class UserController {
         userService.updateProfileImagePath(findUser, ServiceConst.defaultProfileImage);
         return "ok";
     }
+
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
+    @GetMapping("/test2")
+    public String test2() {
+        return "test2";
+    }
+
 }
