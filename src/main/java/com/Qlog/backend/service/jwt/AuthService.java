@@ -1,12 +1,11 @@
-package com.Qlog.backend.service;
+package com.Qlog.backend.service.jwt;
 
 import com.Qlog.backend.controller.dto.auth.AuthResponse;
 import com.Qlog.backend.controller.dto.auth.AuthenticationRequest;
 import com.Qlog.backend.controller.dto.auth.RegisterRequest;
 import com.Qlog.backend.domain.Role;
 import com.Qlog.backend.domain.User;
-import com.Qlog.backend.repository.UserRepository;
-import com.Qlog.backend.service.jwt.JwtService;
+import com.Qlog.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

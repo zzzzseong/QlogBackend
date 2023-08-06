@@ -2,11 +2,15 @@ package com.Qlog.backend.controller;
 
 import com.Qlog.backend.consts.ServiceConst;
 import com.Qlog.backend.consts.SessionConst;
+import com.Qlog.backend.controller.dto.auth.AuthResponse;
+import com.Qlog.backend.controller.dto.auth.AuthenticationRequest;
+import com.Qlog.backend.controller.dto.auth.RegisterRequest;
 import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.Role;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
 import com.Qlog.backend.service.cloud.FileStorageService;
+import com.Qlog.backend.service.jwt.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -22,38 +26,26 @@ public class UserController {
 
     private final UserService userService;
     private final FileStorageService fileStorageService;
+    private final AuthService authService;
 
-    @PostMapping("/register")
-    public void register(UserRegisterForm form) {
-        try {
-            User user = new User(form.getLoginId(), form.getPassword(), form.getName(), Role.USER);
-
-            //User 비밀번호 암호화 -> Spring Security 사용법 알아보기
-
-            userService.save(user);
-            log.info("REGISTER SUCCESS [{}]", form.getLoginId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @PostMapping("/auth/register")
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/login")
-    public boolean login(UserLoginForm form, HttpServletRequest request) {
-        User findUser = userService.findByLoginId(form.getLoginId());
-
-        //ID, PW 예외처리
-        if(findUser == null) return false; //ID is null
-        if(!findUser.getPassword().equals(form.getPassword())) return false; //PW is not correct
-
-        //Session 설정
-        HttpSession session = request.getSession();
-        session.setAttribute("loginUser", findUser);
-
-        log.info("LOGIN SUCCESS [{}]", form.getLoginId());
-        return true;
+    @PostMapping("/auth/authenticate")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
     }
 
-    @PutMapping("/logout")
+    //시간이 만료되면 알아서 403 forbidden 일어남
+
+    //시간 만료랑 로그아웃시에는 어떻게 하지??
+    //access token 과 refresh token의 개념을 잡아놓자
+    //근데 어차피 refresh token을 사용한다면 그것 자체로 access token이 되는게 아닌가??
+    //
+
+    @PutMapping("/auth/logout") //변경 해야함
     public void logout(HttpServletRequest request,
                        @SessionAttribute(name = SessionConst.LOGIN_USER) User user) {
         HttpSession session = request.getSession(false);
