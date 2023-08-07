@@ -36,12 +36,8 @@ public class SecurityConfig {
 
     private RequestMatcher publicEndpoints() {
         return new OrRequestMatcher(
-          new AntPathRequestMatcher("/user/test"),
           new AntPathRequestMatcher("/user/auth/**")
         );
-
-        //Matcher 에 등록하지 않은 요청에 대한 응답을 주려면??
-        //login 해서 토큰을 받는다
     }
 
 }

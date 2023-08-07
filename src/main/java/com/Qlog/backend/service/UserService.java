@@ -1,11 +1,15 @@
 package com.Qlog.backend.service;
 
+import com.Qlog.backend.controller.dto.user.UserProfileUpdateForm;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.repository.UserRepository;
+import com.Qlog.backend.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -14,6 +18,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Transactional
     public void save(User user) {
@@ -35,8 +40,8 @@ public class UserService {
         user.updateProfileImage(path);
     }
     @Transactional
-    public void UpdateProfile(User user, String username, String introduction) {
-        user.updateProfile(username, introduction);
+    public void UpdateProfile(User user, UserProfileUpdateForm request) {
+        user.updateProfile(request.getUsername(), request.getIntroduction());
     }
 
     public User findById(Long id) {
@@ -47,5 +52,11 @@ public class UserService {
     public User findByLoginId(String loginId) {
         Optional<User> findUser = userRepository.findByLoginId(loginId);
         return findUser.orElse(null);
+    }
+
+    public User findByToken(HttpHeaders header) {
+        String token = Objects.requireNonNull(header.getFirst("authorization")).substring("Bearer ".length());
+        String loginId = jwtService.getLoginId(token);
+        return findByLoginId(loginId);
     }
 }
