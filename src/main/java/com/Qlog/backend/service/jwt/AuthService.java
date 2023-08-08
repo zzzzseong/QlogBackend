@@ -6,6 +6,7 @@ import com.Qlog.backend.controller.dto.auth.RegisterRequest;
 import com.Qlog.backend.domain.Role;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
+import com.Qlog.backend.service.storage.RedisCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,13 +20,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final RedisCacheService redisCacheService;
 
     public AuthResponse register(RegisterRequest request) {
         User user = new User(request.getLoginId(), passwordEncoder.encode(request.getPassword()),
                 request.getName(), Role.USER);
-
         userService.save(user);
         String token = jwtService.generateToken(user);
+        redisCacheService.saveUser(token, user);
 
         return new AuthResponse(token);
     }
@@ -38,6 +40,7 @@ public class AuthService {
         );
         User user = userService.findByLoginId(request.getLoginId());
         String token = jwtService.generateToken(user);
+        redisCacheService.saveUser(token, user);
 
         return new AuthResponse(token);
     }

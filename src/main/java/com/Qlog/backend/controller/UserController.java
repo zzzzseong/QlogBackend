@@ -1,14 +1,12 @@
 package com.Qlog.backend.controller;
 
-import com.Qlog.backend.consts.ServiceConst;
-import com.Qlog.backend.consts.SessionConst;
 import com.Qlog.backend.controller.dto.auth.AuthResponse;
 import com.Qlog.backend.controller.dto.auth.AuthenticationRequest;
 import com.Qlog.backend.controller.dto.auth.RegisterRequest;
 import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.service.UserService;
-import com.Qlog.backend.service.cloud.FileStorageService;
+import com.Qlog.backend.service.storage.FileStorageService;
 import com.Qlog.backend.service.jwt.AuthService;
 
 import lombok.RequiredArgsConstructor;

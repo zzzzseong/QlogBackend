@@ -1,9 +1,11 @@
 package com.Qlog.backend.service;
 
 import com.Qlog.backend.controller.dto.user.UserProfileUpdateForm;
+import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
 import com.Qlog.backend.repository.UserRepository;
 import com.Qlog.backend.service.jwt.JwtService;
+import com.Qlog.backend.service.storage.RedisCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final RedisCacheService redisCacheService;
 
     @Transactional
     public void save(User user) {

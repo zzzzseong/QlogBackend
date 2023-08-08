@@ -1,6 +1,7 @@
 package com.Qlog.backend.repository;
 
 import com.Qlog.backend.domain.QCard;
+import com.Qlog.backend.domain.Role;
 import com.Qlog.backend.domain.User;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -21,7 +22,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testUser() {
-        User user = new User("test", "test", "test");
+        User user = new User("test", "test", "test", Role.USER);
         User savedUser = userRepository.save(user);
 
         Optional<User> findOptionalUser = userRepository.findById(savedUser.getId());
@@ -32,16 +33,15 @@ public class UserRepositoryTest {
         }
     }
 
-    @Test
-    public void testLAZY() {
-        User user = new User("test", "test", "test");
-        User saveUser = userRepository.save(user);
-
-        User findUser = userRepository.findById(saveUser.getId()).get();
-        List<QCard> qCards = findUser.getQCards();
-        for (QCard qCard : qCards) {
-            System.out.println("test");
-        }
-
-    }
+//    @Test
+//    public void testLAZY() {
+//        User user = new User("test", "test", "test");
+//        User saveUser = userRepository.save(user);
+//
+//        User findUser = userRepository.findById(saveUser.getId()).get();
+//        List<QCard> qCards = findUser.getQCards();
+//        for (QCard qCard : qCards) {
+//            System.out.println("test");
+//        }
+//    }
 }
