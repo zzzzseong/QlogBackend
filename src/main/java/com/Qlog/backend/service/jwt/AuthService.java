@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final RedisCacheService redisCacheService;
 
+    @Transactional
     public AuthResponse register(RegisterRequest request) {
         User user = new User(request.getLoginId(), passwordEncoder.encode(request.getPassword()),
                 request.getName(), Role.USER);
@@ -31,6 +33,7 @@ public class AuthService {
 
         return new AuthResponse(token);
     }
+
     public AuthResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -45,4 +48,7 @@ public class AuthService {
         return new AuthResponse(token);
     }
 
+    public void logout(String token) {
+        redisCacheService.removeUser(token);
+    }
 }

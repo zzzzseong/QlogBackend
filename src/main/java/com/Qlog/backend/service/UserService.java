@@ -57,8 +57,7 @@ public class UserService {
         return findUser.orElse(null);
     }
 
-    public User findByToken(HttpHeaders header) {
-        String token = Objects.requireNonNull(header.getFirst("authorization")).substring("Bearer ".length());
+    public User findByToken(String token) {
         String loginId = jwtService.getLoginId(token);
         return findByLoginId(loginId);
     }

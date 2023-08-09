@@ -25,13 +25,13 @@ public class RedisCacheService {
         userRedisTemplate.expire(token, expiration, TimeUnit.MINUTES);
     }
 
+    @Transactional
+    public void removeUser(String token) {
+        userRedisTemplate.delete("user:" + token);
+    }
+
     public User findUser(String token) {
         ValueOperations<String, User> valueOperations = userRedisTemplate.opsForValue();
         return valueOperations.get("user:" + token);
     }
-
-    public void findWorkoutRecommend() {}
-
-    public void findSupplementRecommend() {}
-
 }
