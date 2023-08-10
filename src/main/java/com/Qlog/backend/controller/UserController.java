@@ -45,7 +45,6 @@ public class UserController {
     }
 
     @PostMapping("auth/duplicate")
-    @PreAuthorize("hasRole('USER')")
     public boolean checkDuplication(UserDuplicateCheckForm form) {
         User findUser = userService.findByLoginId(form.getLoginId());
         return (findUser == null);
@@ -58,7 +57,6 @@ public class UserController {
     }
 
     @GetMapping("/read")
-    @PreAuthorize("hasRole('USER')")
     public UserReadResponse readUserInformation(@RequestHeader HttpHeaders header) {
         User findUser = userService.findByToken(jwtService.getToken(header));
         return new UserReadResponse(findUser, fileStorageService.getProfileImageURL(findUser.getProfileImageName()));
