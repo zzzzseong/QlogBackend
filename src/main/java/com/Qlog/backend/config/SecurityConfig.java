@@ -26,7 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(publicEndpoints()).permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(publicEndpoints()).permitAll()
+//                        .requestMatchers(userEndpoints()).hasAuthority("USER")
+//                        .requestMatchers(adminEndpoints()).hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -40,4 +43,15 @@ public class SecurityConfig {
         );
     }
 
+//    private RequestMatcher userEndpoints() {
+//        return new OrRequestMatcher(
+//          new AntPathRequestMatcher("/user/**")
+//        );
+//    }
+//
+//    private RequestMatcher adminEndpoints() {
+//        return new OrRequestMatcher(
+//          new AntPathRequestMatcher("/admin/**")
+//        );
+//    }
 }
