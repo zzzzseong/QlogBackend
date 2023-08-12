@@ -33,49 +33,50 @@ public class UserController {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PostMapping("/auth/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(AuthenticationRequest request) {
-        return ResponseEntity.ok(authService.authenticate(request));
-    }
-
-    @PutMapping("/auth/logout")
-    @PreAuthorize("hasRole('USER')")
-    public void logout(@RequestHeader HttpHeaders header) {
-        authService.logout(jwtService.getToken(header));
-    }
-
     @PostMapping("auth/duplicate")
     public boolean checkDuplication(UserDuplicateCheckForm form) {
         User findUser = userService.findByLoginId(form.getLoginId());
         return (findUser == null);
     }
 
+    @PostMapping("/auth/authenticate")
+    public ResponseEntity<AuthResponse> authenticate(AuthenticationRequest request) {
+        return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @PutMapping("/auth/logout")
+    @PreAuthorize("hasAuthority('USER')")
+    public void logout(@RequestHeader HttpHeaders header) {
+        authService.logout(jwtService.getToken(header));
+    }
+
     @PutMapping("/update")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public void updateUserProfile(@RequestHeader HttpHeaders header, UserProfileUpdateForm request) {
         userService.UpdateProfile(userService.findByToken(jwtService.getToken(header)), request);
     }
 
     @GetMapping("/read")
+    @PreAuthorize("hasAuthority('USER')")
     public UserReadResponse readUserInformation(@RequestHeader HttpHeaders header) {
         User findUser = userService.findByToken(jwtService.getToken(header));
         return new UserReadResponse(findUser, fileStorageService.getProfileImageURL(findUser.getProfileImageName()));
     }
 
     @GetMapping("/readId")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public Long readUserId(@RequestHeader HttpHeaders header) {
         return userService.findByToken(jwtService.getToken(header)).getId();
     }
 
     @PostMapping("/image/upload")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public void uploadProfileImage(@RequestHeader HttpHeaders header, UserProfileImageUploadForm request) {
         fileStorageService.uploadProfileImage(userService.findByToken(jwtService.getToken(header)), request.getImage());
     }
 
     @DeleteMapping("/image/remove")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAuthority('USER')")
     public String removeProfileImage(@RequestHeader HttpHeaders header) {
         return fileStorageService.removeProfileImage(userService.findByToken(jwtService.getToken(header)));
     }

@@ -28,8 +28,6 @@ public class SecurityConfig {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(publicEndpoints()).permitAll()
-//                        .requestMatchers(userEndpoints()).hasAuthority("USER")
-//                        .requestMatchers(adminEndpoints()).hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -42,16 +40,4 @@ public class SecurityConfig {
           new AntPathRequestMatcher("/user/auth/**")
         );
     }
-
-//    private RequestMatcher userEndpoints() {
-//        return new OrRequestMatcher(
-//          new AntPathRequestMatcher("/user/**")
-//        );
-//    }
-//
-//    private RequestMatcher adminEndpoints() {
-//        return new OrRequestMatcher(
-//          new AntPathRequestMatcher("/admin/**")
-//        );
-//    }
 }
