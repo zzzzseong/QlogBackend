@@ -1,5 +1,6 @@
 package com.Qlog.backend.config;
 
+import com.Qlog.backend.config.securityFilter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -31,7 +33,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, JwtFilter.class);
         return httpSecurity.build();
     }
 

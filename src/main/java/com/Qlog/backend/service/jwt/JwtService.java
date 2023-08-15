@@ -1,10 +1,11 @@
 package com.Qlog.backend.service.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.Qlog.backend.exception.CustomErrorCode;
+import com.Qlog.backend.exception.CustomException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,12 +51,24 @@ public class JwtService {
     }
 
     private Claims getAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts
+                    .parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch(ExpiredJwtException e) {
+            throw new CustomException(CustomErrorCode.EXPIRED_JWT_EXCEPTION);
+        } catch(UnsupportedJwtException e) {
+            throw new CustomException(CustomErrorCode.UNSUPPORTED_JWT_EXCEPTION);
+        } catch(MalformedJwtException e) {
+            throw new CustomException(CustomErrorCode.MALFORMED_JWT_EXCEPTION);
+        } catch(SignatureException e) {
+            throw new CustomException(CustomErrorCode.SIGNATURE_EXCEPTION);
+        } catch(IllegalArgumentException e) {
+            throw new CustomException(CustomErrorCode.ILLEGAL_ARGUMENT_EXCEPTION);
+        }
     }
 
     private Key getSignInKey() {
