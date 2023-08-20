@@ -5,6 +5,8 @@ import com.Qlog.backend.controller.dto.auth.AuthenticationRequest;
 import com.Qlog.backend.controller.dto.auth.RegisterRequest;
 import com.Qlog.backend.controller.dto.user.*;
 import com.Qlog.backend.domain.User;
+import com.Qlog.backend.exception.CustomErrorCode;
+import com.Qlog.backend.exception.CustomException;
 import com.Qlog.backend.service.UserService;
 import com.Qlog.backend.service.jwt.JwtService;
 import com.Qlog.backend.service.storage.FileStorageService;
