@@ -1,4 +1,4 @@
-package com.Qlog.backend.config.securityFilter;
+package com.Qlog.backend.config;
 
 import com.Qlog.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

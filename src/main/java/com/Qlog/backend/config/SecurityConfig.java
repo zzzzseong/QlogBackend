@@ -1,6 +1,7 @@
 package com.Qlog.backend.config;
 
 import com.Qlog.backend.config.securityFilter.JwtExceptionFilter;
+import com.Qlog.backend.config.securityFilter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
