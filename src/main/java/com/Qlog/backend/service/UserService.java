@@ -1,17 +1,16 @@
 package com.Qlog.backend.service;
 
 import com.Qlog.backend.controller.dto.user.UserProfileUpdateForm;
-import com.Qlog.backend.domain.QCard;
 import com.Qlog.backend.domain.User;
+import com.Qlog.backend.exception.errorcodes.CustomErrorCode;
+import com.Qlog.backend.exception.exceptions.CustomException;
 import com.Qlog.backend.repository.UserRepository;
 import com.Qlog.backend.service.jwt.JwtService;
 import com.Qlog.backend.service.storage.RedisCacheService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -48,8 +47,8 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        Optional<User> findUser = userRepository.findById(id);
-        return findUser.orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(() -> new CustomException(CustomErrorCode.ALREADY_LOGOUT_EXCEPTION));
     }
 
     public User findByLoginId(String loginId) {

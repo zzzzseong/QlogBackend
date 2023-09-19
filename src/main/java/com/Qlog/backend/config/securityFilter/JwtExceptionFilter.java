@@ -1,7 +1,7 @@
 package com.Qlog.backend.config.securityFilter;
 
-import com.Qlog.backend.exception.CustomErrorResponse;
-import com.Qlog.backend.exception.CustomException;
+import com.Qlog.backend.exception.exceptions.CustomException;
+import com.Qlog.backend.exception.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -37,7 +37,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("UTF-8");
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(response.getWriter(), new CustomErrorResponse(e.getCustomErrorCode(), e.getMessage()));
+            objectMapper.writeValue(response.getWriter(), new ErrorResponse(e.getCustomErrorCode(), e.getMessage()));
         }
     }
 }

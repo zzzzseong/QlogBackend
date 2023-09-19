@@ -1,5 +1,6 @@
-package com.Qlog.backend.exception;
+package com.Qlog.backend.exception.exceptions;
 
+import com.Qlog.backend.exception.errorcodes.CustomErrorCode;
 import lombok.Getter;
 
 @Getter
@@ -13,5 +14,4 @@ public class CustomException extends RuntimeException {
         this.customErrorCode = customErrorCode;
         this.message = customErrorCode.getStatusMessage();
     }
-
 }

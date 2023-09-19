@@ -1,4 +1,4 @@
-package com.Qlog.backend.exception;
+package com.Qlog.backend.exception.errorcodes;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

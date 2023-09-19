@@ -1,7 +1,7 @@
 package com.Qlog.backend.service.jwt;
 
-import com.Qlog.backend.exception.CustomErrorCode;
-import com.Qlog.backend.exception.CustomException;
+import com.Qlog.backend.exception.errorcodes.CustomErrorCode;
+import com.Qlog.backend.exception.exceptions.CustomException;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
